@@ -3,17 +3,17 @@
  * DATABASE CONNECTION CONFIGURATION
  * ===========================================
  * 
- * This file initializes the Drizzle ORM connection to Neon PostgreSQL.
+ * This file initializes the Drizzle ORM connection to Supabase PostgreSQL.
  * 
  * SETUP INSTRUCTIONS:
- * 1. Create a Neon database at https://neon.tech
- * 2. Copy the connection string from Neon dashboard
+ * 1. Create a Supabase project at https://supabase.com
+ * 2. Copy the connection string from Database Settings > Connection pooling
  * 3. Add it to .env.local as DATABASE_URL
  * 4. Run migrations: npx drizzle-kit push
  */
 
-import { drizzle } from 'drizzle-orm/neon-http';
-import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from './schema';
 
 // ==========================================
@@ -30,16 +30,18 @@ if (!databaseUrl) {
 }
 
 // ==========================================
-// NEON CONNECTION SETUP
+// SUPABASE CONNECTION SETUP
 // ==========================================
 /**
- * Create a Neon HTTP connection
- * This is optimized for serverless environments (Vercel, etc.)
+ * Create a PostgreSQL connection using postgres.js
+ * This is compatible with Supabase's connection pooler
  */
-const sql = neon(databaseUrl);
+const sql = postgres(databaseUrl, {
+  prepare: false, // Required for Supabase Transaction pooler (pgbouncer)
+});
 
 /**
- * Initialize Drizzle ORM with the Neon connection
+ * Initialize Drizzle ORM with the PostgreSQL connection
  * This is our main database client
  */
 export const db = drizzle(sql, { schema });
@@ -59,7 +61,7 @@ export async function testDatabaseConnection() {
     return true;
   } catch (error) {
     console.error('❌ Database connection failed:', error);
-    console.log('📝 Check your DATABASE_URL in .env.local');
+    console.log('📝 Check your DATABASE_URL in .env');
     return false;
   }
 }

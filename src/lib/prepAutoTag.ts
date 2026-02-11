@@ -10,7 +10,7 @@
  * 3. Download fixed PDF from returned URL
  */
 
-const PREP_AUTOTAG_BASE_URL = 'https://api-pdfservice.continualengine.com/v1';
+const PREP_AUTOTAG_BASE_URL = 'https://clonecepoc.web.moocpedia.com/v1';
 const PREP_API_ID = process.env.PREP_API_ID!;
 const PREP_APP_KEY = process.env.PREP_APP_KEY!;
 

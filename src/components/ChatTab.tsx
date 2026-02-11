@@ -318,7 +318,12 @@ export default function ChatTab() {
 
       // Handle errors and restart
       commandRecognition.onerror = (e: any) => {
-        console.error('❌ Voice command error:', e.error);
+        // These are normal/expected errors, don't log as errors
+        const expectedErrors = ['no-speech', 'aborted', 'network'];
+        if (!expectedErrors.includes(e.error)) {
+          console.error('❌ Voice command error:', e.error);
+        }
+        
         try {
           commandRecognition?.stop();
         } catch (err) {
@@ -329,7 +334,6 @@ export default function ChatTab() {
         if (e.error !== 'not-allowed') {
           if (restartTimer) clearTimeout(restartTimer);
           restartTimer = setTimeout(() => {
-            console.log('🔄 Restarting voice command recognition...');
             try {
               commandRecognition && commandRecognition.start();
             } catch (err) {

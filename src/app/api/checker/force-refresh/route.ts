@@ -8,7 +8,7 @@ import { db } from '@/db';
 import { pdfs } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 
-const PREP_BASE_URL = 'https://api-pdfservice.continualengine.com';
+const PREP_BASE_URL = 'https://clonecepoc.web.moocpedia.com';
 const PREP_API_ID = process.env.PREP_API_ID!;
 const PREP_APP_KEY = process.env.PREP_APP_KEY!;
 
